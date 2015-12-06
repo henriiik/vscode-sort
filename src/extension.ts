@@ -1,24 +1,41 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode'; 
+import * as vscode from "vscode";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+	let settings = vscode.workspace.getConfiguration("sort");
+	let locale = settings.get("locale", "en");
+	let sensitivity = settings.get("ignore-case", false) ? "accent" : "variant";
+
+	let start = textEditor.selection.start;
+	let end = textEditor.selection.end;
+
+	if (end.character === 0) {
+		end = end.with(end.line - 1, Number.MAX_VALUE);
+	}
+
+	if (start.line !== end.line) {
+		start = start.with(undefined, 0);
+		end = end.with(undefined, Number.MAX_VALUE);
+	}
+
+	let range = new vscode.Range(start, end);
+	let text = textEditor.document.getText(range);
+
+	let separator = (start.line === end.line) ? " " : "\n";
+	let items = text.split(separator);
+
+	let sorted = items.sort((a, b) => a.localeCompare(b, locale, { sensitivity }));
+	let sortedText = sorted.join(separator);
+
+	if (text === sortedText) {
+		sorted = items.sort((a, b) => -a.localeCompare(b, locale, { sensitivity }));
+		sortedText = sorted.join(separator);
+	}
+
+	edit.replace(range, sortedText);
+}
+
 export function activate(context: vscode.ExtensionContext) {
+	let disposable = vscode.commands.registerTextEditorCommand("extension.sort", sorter);
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-sorter" is now active!'); 
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	var disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
-	
 	context.subscriptions.push(disposable);
 }
