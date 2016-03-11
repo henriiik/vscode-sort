@@ -8,4 +8,4 @@
 ### Added
 - Initial version of extension
 
-[0.2.0]: https://github.com/henriiik/vscode-sort/compare/v0.1.1...v0.2.0
+[0.2.0]: https://github.com/henriiik/vscode-sort/compare/0.1.1...0.2.0
