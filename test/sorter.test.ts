@@ -3,42 +3,60 @@ import * as vscode from "vscode";
 import {sort, makeRange} from "../src/sorter";
 
 suite("sort()", () => {
-    let separator = " ";
-    let locale = "en";
-    let sensitivity = "variant";
+    function testSeparator(s: string, name: string) {
+        let locale = "en";
+        let sensitivity = "variant";
 
-    test("should sort words", () => {
-        assert.equal("a b c", sort("c a b", separator, locale, sensitivity));
-    });
+        test(`should sort ${name}`, () => {
+            assert.equal(`a${s}b${s}c`, sort(`b${s}c${s}a`, s, locale, sensitivity));
+        });
 
-    test("should sort lines", () => {
-        let separator = "\n";
-        assert.equal("a\nb\nc", sort("b\nc\na", separator, locale, sensitivity));
-    });
+        test(`should reverse sort ${name}`, () => {
+            assert.equal(`c${s}b${s}a`, sort(`a${s}b${s}c`, s, locale, sensitivity));
+        });
 
-    test("should reverse sort ", () => {
-        assert.equal("c b a", sort("a b c", separator, locale, sensitivity));
-    });
+        test(`should sort comma separated ${name}`, () => {
+            assert.equal(`a,${s}b,${s}c`, sort(`c,${s}a,${s}b`, s, locale, sensitivity));
+        });
 
-    test("should sort by locale", () => {
-        let text = "ä b a";
-        let sortedSV = "a b ä";
-        let localseSV = "sv";
-        assert.equal(sortedSV, sort(text, separator, localseSV, sensitivity));
+        test(`should reverse sort comma separated ${name}`, () => {
+            assert.equal(`c,${s}b,${s}a`, sort(`a,${s}b,${s}c`, s, locale, sensitivity));
+        });
 
-        let sortedDE = "a ä b";
-        let localeDE = "de";
-        assert.equal(sortedDE, sort(text, separator, localeDE, sensitivity));
-    });
+        test(`should sort comma separated ${name} with trailing comma`, () => {
+            assert.equal(`a,${s}b,${s}c,`, sort(`c,${s}a,${s}b,`, s, locale, sensitivity));
+        });
 
-    test("should sort by case case", () => {
-        let text = "AA aA aa Aa";
-        let sorted = "aa aA Aa AA";
-        assert.equal(sorted, sort(text, separator, locale, sensitivity));
+        test(`should reverse sort comma separated ${name}`, () => {
+            assert.equal(`c,${s}b,${s}a,`, sort(`a,${s}b,${s}c,`, s, locale, sensitivity));
+        });
 
-        let sensitivityIgnore = "accent";
-        assert.equal(text, sort(text, separator, locale, sensitivityIgnore));
-    });
+        test(`should sort ${name} by locale`, () => {
+            let text = `ä${s}b${s}a`;
+            let sortedSV = `a${s}b${s}ä`;
+            let localseSV = `sv`;
+            assert.equal(sortedSV, sort(text, s, localseSV, sensitivity));
+
+            let sortedDE = `a${s}ä${s}b`;
+            let localeDE = "de";
+            assert.equal(sortedDE, sort(text, s, localeDE, sensitivity));
+        });
+
+        test(`should sort by ${name} case case`, () => {
+            let text = `AA${s}aA${s}aa${s}Aa`;
+            let sorted = `aa${s}aA${s}Aa${s}AA`;
+            assert.equal(sorted, sort(text, s, locale, sensitivity));
+
+            let sensitivityIgnore = "accent";
+            assert.equal(text, sort(text, s, locale, sensitivityIgnore));
+        });
+    }
+
+    testSeparator(" ", "words");
+
+    testSeparator("\n", "LF lines");
+
+    testSeparator("\r\n", "CRLF lines");
 });
 
 suite("makeRange()", () => {

@@ -14,7 +14,16 @@ export function makeRange(start: vscode.Position, end: vscode.Position) {
 }
 
 export function sort(text: string, separator: string, locale: string, sensitivity: string) {
-    let items = text.split(separator);
+    let regex = new RegExp(separator + "+");
+    let items = text.split(regex);
+
+    if (text[text.length - 1] !== ",") {
+        let test = text.split(new RegExp("," + separator + "+"));
+        if (test.length >= items.length) {
+            items = test;
+            separator = "," + separator;
+        }
+    }
 
     let sorted = items.sort((a, b) => a.localeCompare(b, locale, { sensitivity }));
     let sortedText = sorted.join(separator);
@@ -37,7 +46,8 @@ export function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdi
     let range = makeRange(start, end);
 
     let text = textEditor.document.getText(range);
-    let separator = (start.line === end.line) ? " " : "\n";
+    let eol = text.indexOf("\r\n") > 0 ? "\r\n" : "\n";
+    let separator = (start.line === end.line) ? " " : eol;
 
     let sortedText = sort(text, separator, locale, sensitivity);
 
