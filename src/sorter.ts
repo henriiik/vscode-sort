@@ -14,9 +14,17 @@ export function makeRange(start: vscode.Position, end: vscode.Position) {
 }
 
 export function sort(text: string, separator: string, locale: string, sensitivity: string) {
-    let regex = new RegExp(separator + "+");
-    let items = text.split(regex);
+    let leadRegexp = new RegExp("^" + separator + "+");
+    let trailRegexp = new RegExp(separator + "+$");
+    let itemRegexp = new RegExp(separator + "+");
 
+    let lead = leadRegexp.exec(text) || "";
+    text = text.replace(leadRegexp, "");
+
+    let trail = trailRegexp.exec(text) || "";
+    text = text.replace(trailRegexp, "");
+
+    let items = text.split(itemRegexp);
     if (text[text.length - 1] !== ",") {
         let test = text.split(new RegExp("," + separator + "+"));
         if (test.length >= items.length) {
@@ -33,7 +41,7 @@ export function sort(text: string, separator: string, locale: string, sensitivit
         sortedText = sorted.join(separator);
     }
 
-    return sortedText;
+    return lead + sortedText + trail;
 }
 
 export function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) {

@@ -11,12 +11,36 @@ suite("sort()", () => {
             assert.equal(`a${s}b${s}c`, sort(`b${s}c${s}a`, s, locale, sensitivity));
         });
 
+        test(`should sort ${name} with trailing whitespace`, () => {
+            assert.equal(`a${s}b${s}c${s}`, sort(`b${s}c${s}a${s}`, s, locale, sensitivity));
+        });
+
+        test(`should sort ${name} with leading whitespace`, () => {
+            assert.equal(`${s}a${s}b${s}c`, sort(`${s}b${s}c${s}a`, s, locale, sensitivity));
+        });
+
+        test(`should sort ${name} with trailing and leading whitespace`, () => {
+            assert.equal(`${s}a${s}b${s}c${s}`, sort(`${s}b${s}c${s}a${s}`, s, locale, sensitivity));
+        });
+
         test(`should reverse sort ${name}`, () => {
             assert.equal(`c${s}b${s}a`, sort(`a${s}b${s}c`, s, locale, sensitivity));
         });
 
         test(`should sort comma separated ${name}`, () => {
             assert.equal(`a,${s}b,${s}c`, sort(`c,${s}a,${s}b`, s, locale, sensitivity));
+        });
+
+        test(`should sort comma separated ${name} with trailing whitespace`, () => {
+            assert.equal(`a,${s}b,${s}c${s}`, sort(`b,${s}c,${s}a${s}`, s, locale, sensitivity));
+        });
+
+        test(`should sort comma separated ${name} with leading whitespace`, () => {
+            assert.equal(`${s}a,${s}b,${s}c`, sort(`${s}b,${s}c,${s}a`, s, locale, sensitivity));
+        });
+
+        test(`should sort comma separated ${name} with trailing and leading whitespace`, () => {
+            assert.equal(`${s}a,${s}b,${s}c,${s}`, sort(`${s}b,${s}c,${s}a,${s}`, s, locale, sensitivity));
         });
 
         test(`should reverse sort comma separated ${name}`, () => {
