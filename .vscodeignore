@@ -1,8 +1,10 @@
-.vscode/**
-typings/**
-out/test/**
-test/**
-src/**
-**/*.map
+.gitattributes
 .gitignore
+.vscode/**
+**/*.map
+CHANGELOG.md
+out/test/**
+src/**
+test/**
 tsconfig.json
+typings/**
