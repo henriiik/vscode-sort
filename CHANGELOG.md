@@ -1,6 +1,6 @@
 # [0.2.1] - 2016-03-11
 ### Added
-- Handling of comma leading/trailing whitespace
+- Handling of leading/trailing whitespace
 
 # [0.2.0] - 2016-03-11
 ### Added
