@@ -2,7 +2,7 @@
   "name": "vscode-sort",
   "displayName": "Sort",
   "description": "Sort lines or words.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "henriiik",
   "license": "MIT",
   "bugs": {
@@ -14,7 +14,7 @@
     "url": "https://github.com/henriiik/vscode-sort"
   },
   "engines": {
-    "vscode": "^0.10.10"
+    "vscode": "^1.0.0"
   },
   "categories": [
     "Other"

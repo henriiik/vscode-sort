@@ -83,22 +83,22 @@ suite("sort()", () => {
     testSeparator("\r\n", "CRLF lines");
 });
 
-suite("makeRange()", () => {
-    let start = new vscode.Position(1, 1);
-    let end = new vscode.Position(2, 2);
+// suite("makeRange()", () => {
+//     let start = new vscode.Position(1, 1);
+//     let end = new vscode.Position(2, 2);
 
-    test("should expand selection", () => {
-        let range = makeRange(start, end);
-        assert.equal(range.start.character, 0);
-        assert.equal(range.start.line, start.line);
-        assert.equal(range.end.character, Number.MAX_VALUE);
-        assert.equal(range.end.line, end.line);
-    });
+//     test("should expand selection", () => {
+//         let range = makeRange(start, end);
+//         assert.equal(range.start.character, 0);
+//         assert.equal(range.start.line, start.line);
+//         assert.equal(range.end.character, Number.MAX_VALUE);
+//         assert.equal(range.end.line, end.line);
+//     });
 
-    test("should ignore empty newline", () => {
-        let empty = end.with(2, 0);
-        let range = makeRange(start, empty);
-        assert.equal(range.end.character, Number.MAX_VALUE);
-        assert.equal(range.end.line, 1);
-    });
-});
+//     test("should ignore empty newline", () => {
+//         let empty = end.with(2, 0);
+//         let range = makeRange(start, empty);
+//         assert.equal(range.end.character, Number.MAX_VALUE);
+//         assert.equal(range.end.line, 1);
+//     });
+// });

@@ -1,13 +1,13 @@
 import * as vscode from "vscode";
 
-export function makeRange(start: vscode.Position, end: vscode.Position) {
+export function makeRange(start: vscode.Position, end: vscode.Position, document: vscode.TextDocument) {
     if (end.character === 0) {
-        end = end.with(end.line - 1, Number.MAX_VALUE);
+        end = document.lineAt(end.line - 1).range.end;
     }
 
     if (start.line !== end.line) {
-        start = start.with(undefined, 0);
-        end = end.with(undefined, Number.MAX_VALUE);
+        start = start.with(start.line, 0);
+        end = document.lineAt(end.line).range.end;
     }
 
     return new vscode.Range(start, end);
@@ -51,11 +51,11 @@ export function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdi
 
     let start = textEditor.selection.start;
     let end = textEditor.selection.end;
-    let range = makeRange(start, end);
+    let range = makeRange(start, end, textEditor.document);
 
     let text = textEditor.document.getText(range);
     let eol = text.indexOf("\r\n") > 0 ? "\r\n" : "\n";
-    let separator = (start.line === end.line) ? " " : eol;
+    let separator = (range.start.line === range.end.line) ? " " : eol;
 
     let sortedText = sort(text, separator, locale, sensitivity);
 
