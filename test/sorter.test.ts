@@ -66,13 +66,14 @@ suite("sort()", () => {
             assert.equal(sortedDE, sort(text, s, localeDE, sensitivity));
         });
 
-        test(`should sort by ${name} case case`, () => {
+        test(`should sort ${name} by case`, () => {
             let text = `AA${s}aA${s}aa${s}Aa`;
             let sorted = `aa${s}aA${s}Aa${s}AA`;
             assert.equal(sorted, sort(text, s, locale, sensitivity));
 
+            let reversed = `Aa${s}aa${s}aA${s}AA`;
             let sensitivityIgnore = "accent";
-            assert.equal(text, sort(text, s, locale, sensitivityIgnore));
+            assert.equal(reversed, sort(text, s, locale, sensitivityIgnore));
         });
     }
 

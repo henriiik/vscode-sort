@@ -37,7 +37,8 @@ export function sort(text: string, separator: string, locale: string, sensitivit
     let sortedText = sorted.join(separator);
 
     if (text === sortedText) {
-        sorted = items.sort((a, b) => -a.localeCompare(b, locale, { sensitivity }));
+        sorted = sorted.reverse();
+        // sorted = items.sort((a, b) => -a.localeCompare(b, locale, { sensitivity }));
         sortedText = sorted.join(separator);
     }
 
