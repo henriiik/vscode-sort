@@ -13,7 +13,7 @@ export function makeRange(start: vscode.Position, end: vscode.Position, document
     return new vscode.Range(start, end);
 }
 
-export function sort(text: string, separator: string, locale: string, sensitivity: string) {
+export function sort(text: string, separator: string, locale: string, ignoreCase: boolean) {
     let leadRegexp = new RegExp("^" + separator + "+");
     let trailRegexp = new RegExp(separator + "+$");
     let itemRegexp = new RegExp(separator + "+");
@@ -33,12 +33,23 @@ export function sort(text: string, separator: string, locale: string, sensitivit
         }
     }
 
-    let sorted = items.sort((a, b) => a.localeCompare(b, locale, { sensitivity }));
+    let sorted;
+    if (locale !== "") {
+        let sensitivity = ignoreCase ? "accent" : "variant";
+        sorted = items.sort((a, b) => a.localeCompare(b, locale, { sensitivity }));
+    } else if (ignoreCase) {
+        sorted = items
+            .map((item, index) => { return { item: item.toLowerCase(), index }; })
+            .sort((a, b) => +(a.item > b.item) || +(b.item > a.item))
+            .map(item => items[item.index]);
+    } else {
+        sorted = items.sort();
+    }
+
     let sortedText = sorted.join(separator);
 
     if (text === sortedText) {
         sorted = sorted.reverse();
-        // sorted = items.sort((a, b) => -a.localeCompare(b, locale, { sensitivity }));
         sortedText = sorted.join(separator);
     }
 
@@ -48,7 +59,7 @@ export function sort(text: string, separator: string, locale: string, sensitivit
 export function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
     let settings = vscode.workspace.getConfiguration("sort");
     let locale = settings.get("locale", "en");
-    let sensitivity = settings.get("ignore-case", false) ? "accent" : "variant";
+    let ignoreCase = settings.get("ignore-case", false);
 
     let start = textEditor.selection.start;
     let end = textEditor.selection.end;
@@ -58,7 +69,7 @@ export function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdi
     let eol = text.indexOf("\r\n") > 0 ? "\r\n" : "\n";
     let separator = (range.start.line === range.end.line) ? " " : eol;
 
-    let sortedText = sort(text, separator, locale, sensitivity);
+    let sortedText = sort(text, separator, locale, ignoreCase);
 
     edit.replace(range, sortedText);
 }
