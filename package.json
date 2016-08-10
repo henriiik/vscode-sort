@@ -43,7 +43,7 @@
       "properties": {
         "sort.locale": {
           "type": "string",
-          "default": "en",
+          "default": "",
           "description": "The locale to use in sorting comparison."
         },
         "sort.ignore-case": {
