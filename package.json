@@ -2,7 +2,7 @@
   "name": "vscode-sort",
   "displayName": "Sort",
   "description": "Sort lines or words.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "publisher": "henriiik",
   "license": "MIT",
   "bugs": {
