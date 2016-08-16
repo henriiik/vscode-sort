@@ -13,7 +13,7 @@ export function makeRange(start: vscode.Position, end: vscode.Position, document
     return new vscode.Range(start, end);
 }
 
-export function sort(text: string, separator: string, locale: string, ignoreCase: boolean) {
+export function sort(text: string, separator: string, locale: string) {
     let leadRegexp = new RegExp("^" + separator + "+");
     let trailRegexp = new RegExp(separator + "+$");
     let itemRegexp = new RegExp(separator + "+");
@@ -35,13 +35,7 @@ export function sort(text: string, separator: string, locale: string, ignoreCase
 
     let sorted;
     if (locale !== "") {
-        let sensitivity = ignoreCase ? "accent" : "variant";
-        sorted = items.sort((a, b) => a.localeCompare(b, locale, { sensitivity }));
-    } else if (ignoreCase) {
-        sorted = items
-            .map((item, index) => { return { item: item.toLowerCase(), index }; })
-            .sort((a, b) => +(a.item > b.item) || +(b.item > a.item))
-            .map(item => items[item.index]);
+        sorted = items.sort((a, b) => a.localeCompare(b, locale));
     } else {
         sorted = items.sort();
     }
@@ -59,7 +53,6 @@ export function sort(text: string, separator: string, locale: string, ignoreCase
 export function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
     let settings = vscode.workspace.getConfiguration("sort");
     let locale = settings.get("locale", "en");
-    let ignoreCase = settings.get("ignore-case", false);
 
     let start = textEditor.selection.start;
     let end = textEditor.selection.end;
@@ -69,7 +62,7 @@ export function sorter(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdi
     let eol = text.indexOf("\r\n") > 0 ? "\r\n" : "\n";
     let separator = (range.start.line === range.end.line) ? " " : eol;
 
-    let sortedText = sort(text, separator, locale, ignoreCase);
+    let sortedText = sort(text, separator, locale);
 
     edit.replace(range, sortedText);
 }

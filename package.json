@@ -2,7 +2,7 @@
   "name": "vscode-sort",
   "displayName": "Sort",
   "description": "Sort lines or words.",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "publisher": "henriiik",
   "license": "MIT",
   "bugs": {
@@ -45,11 +45,6 @@
           "type": "string",
           "default": "",
           "description": "The locale to use in sorting comparison."
-        },
-        "sort.ignore-case": {
-          "type": "boolean",
-          "default": false,
-          "description": "Wether or not the sort should ignore case."
         }
       }
     }

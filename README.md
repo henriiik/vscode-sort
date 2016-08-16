@@ -14,11 +14,8 @@ If you have selected multiple lines, lines will be sorted. If you have selected 
 
 If you want to set the locale for the sort, you can do so with the `sort.locale` option. Then the function [localeCompare](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare) is used for the sort, follow the link for more information.
 
-If you want the sort to ignore case, you can use the `sort.ignore-case` option.
-
 ```
 {
 	"sort.locale": "sv",
-	"sort.ignore-case": true
 }
 ```

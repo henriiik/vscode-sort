@@ -1,3 +1,7 @@
+# [0.2.5] - 2016-08-16
+### Fixed
+- Removed `ignore-case` option #4
+
 # [0.2.4] - 2016-08-10
 ### Fixed
 - Default locale
@@ -24,6 +28,7 @@
 ### Added
 - Initial version of extension
 
+[0.2.5]: https://github.com/henriiik/vscode-sort/compare/0.2.4...0.2.5
 [0.2.4]: https://github.com/henriiik/vscode-sort/compare/0.2.3...0.2.4
 [0.2.3]: https://github.com/henriiik/vscode-sort/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/henriiik/vscode-sort/compare/0.2.1...0.2.2
